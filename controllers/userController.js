@@ -15,6 +15,17 @@ const generateJwt = (id, email, role) => {
 class UserController {
     async registration(req, res, next){
         const {email, password, role} = req.body
+
+        if(Object.keys(req.body).length == 0){
+            return next(ApiError.badRequest("Where is Body???"))
+        }
+        if(Object.keys(req.body).length > 3){
+            return next(ApiError.badRequest("Too many params!!!"))
+        }
+        if(!email || !password){
+            return next(ApiError.badRequest("Enter email and passwrod!"))
+        }
+
         if(!email || !password){
             return next(ApiError.badRequest("Please enter email/password"))
         }
@@ -31,6 +42,17 @@ class UserController {
 
     async login(req, res, next){
         const {email, password} = req.body
+
+        if(Object.keys(req.body).length == 0){
+            return next(ApiError.badRequest("Where is Body???"))
+        }
+        if(Object.keys(req.body).length > 2){
+            return next(ApiError.badRequest("Too many params!!!"))
+        }
+        if(!email || !password){
+            return next(ApiError.badRequest("Enter email and passwrod!"))
+        }
+
         const user = await User.findOne({where: {email}})
         if(!user){
             return next(ApiError.badRequest("User doesn't exist"))

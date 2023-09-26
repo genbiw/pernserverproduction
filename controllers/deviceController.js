@@ -53,7 +53,7 @@ class DeviceController {
         return res.json(devices)
     }
 
-    async getOne(req, res) {
+    async getOne(req, res, next) {
         const {id} = req.params
         const device = await Device.findOne(
             {
@@ -61,7 +61,22 @@ class DeviceController {
                 include: [{model: DeviceInfo, as: "info"}]
             }
         )
+        if(device === null){
+            next(ApiError.badRequest("Device not found")) 
+            return
+        }
         return res.json(device)
+    }
+
+    async delete(req, res) {
+        const {id} = req.params
+        const deletedRowCount = await Device.destroy({
+            where: {id}
+        })
+        if(deletedRowCount === 0){
+            return res.status(404).json({message: `Device not found`})
+        }
+        return res.status(200).json({message: `Device was deleted`})
     }
 }
 

@@ -18,9 +18,9 @@ app.use(fileupload({}))
 app.use("/api", router)
 app.use(errorHandler) //Error midleware should be last in chain
 
-app.get('/', (req, res) => {
-    res.status(200).json({message: "Work work..."})
-})
+// app.get('/', (req, res) => {
+//     res.status(200).json({message: "Work work..."})
+// })
 
 const start = async () => {
     try {
@@ -32,4 +32,4 @@ const start = async () => {
     }
 }
 
-start() 
+start()
